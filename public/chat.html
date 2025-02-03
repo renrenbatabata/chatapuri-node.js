@@ -80,7 +80,7 @@
         let username = localStorage.getItem("username");
         let room = localStorage.getItem("room");
         const form = document.getElementById("form");
-        const input = document.getElementById("input");
+        const messageInput = document.getElementById("messageInput");
         const messages = document.getElementById("messages");
 
         document.getElementById("roomTitle").innerText = `💬 部屋:${room}`;
@@ -93,7 +93,7 @@
         }
 
         if (!sessionStorage.getItem("joined")) {
-            socket.emit("chat message", `🔔${username}が入ってきました!`);
+            socket.emit("chat message", {room,message:`🔔${username}が入ってきました!`});
             sessionStorage.setItem("joined", true);
         }
 

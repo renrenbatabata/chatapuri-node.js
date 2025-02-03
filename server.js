@@ -35,6 +35,8 @@ io.on("connection", (socket) => {
         socket.room = room;
         socket.join(room);
         console.log(`${username}が${room}に入室したぞよ！`)
+
+        io.to(room).emit("chat message",`🔔 ${username} が${room}に参加しました！`);
     });
 
 
