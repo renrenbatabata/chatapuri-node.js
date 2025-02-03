@@ -8,29 +8,44 @@
 </head>
 
 <body>
-    <h2>ようこそ!魔王の部屋に</h2>
+    <h2>WebSocket-Chat</h2>
+    <form class="form-inline">
+        <div class="form-group">
+            <label for="rooms" class="roomLabel">部屋　:</label><!-- /.roomLabel -->
+            <select name="form-control" id="rooms">
+                <option value="room01">部屋01</option>
+                <option value="room02">部屋02</option>
+                <option value="room03">部屋03</option>
+                <option value="room04">部屋04</option>
+                <option value="room05">部屋05</option>
+            </select><!-- /# -->
+        </div><!-- /.form-group -->
+    </form>
     <input type="text" id="usernameInput" placeholder="名を名乗れ！">
     <button id="loginBtn">ログイン</button>
 
     <script>
 
+        //既にログインしてたら、自動的にchat画面へ
+        if (localStorage.getItem("username")&& localStorage.getItem("room")) {
+            window.location.href = "/chat";
+        }
+
         document.getElementById("loginBtn").addEventListener("click", () => {
             let username = document.getElementById("usernameInput").value;
+            let room = document.getElementById("rooms").value;
 
 
             if (username) {
                 localStorage.setItem("username", username);//ユーザー名を保存
-                console.log("ユーザー名を保存")
+                localStorage.setItem("room",room);//部屋名を保存
+                console.log("ユーザー名と部屋を保存")
                 window.location.href = "/chat";//chat画面へ遷移
             } else {
                 alert("名前入れろや！")
             }
         });
 
-        //既にログインしてたら、自動的にchat画面へ
-        if (localStorage.getItem("username")) {
-            window.location.href = "/chat";
-        }
     </script>
 </body>
 

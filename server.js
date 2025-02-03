@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const http = require("http");
+const path = require("path");
 const { disconnect } = require("process");
 const { Socket } = require("socket.io");
 const server = http.createServer(app);
@@ -22,33 +23,37 @@ app.get("/chat",(req,res)=>{
 });
 
 app.use(express.static("public"));//クライアント側のHTMLファイルを配信
-
+app.use(express.static(path.join(__dirname,"public")))
 
 io.on("connection", (socket) => {
 
     console.log("誰かが来たぞ🎉");
 
-    //ユーザーが名前を送ってきたら保存
-    socket.on("set username", (username) => {
+    //部屋に入る
+    socket.on("join room", ({username,room}) => {
         socket.username = username;
+        socket.room = room;
+        socket.join(room);
+        console.log(`${username}が${room}に入室したぞよ！`)
     });
 
 
     //メッセージを受信
-    socket.on("chat message", (msg) => {
-        if(socket.username){
-        io.emit("chat message", `${socket.username}: ${msg}`);
-        }else{
-            socket.emit("chat message","⚠️ 名前を設定してください！")
-        }
+    socket.on("chat message", ({room,message}) => {
+        io.to(room).emit("chat message",message);
     });
 
     //切断時
     socket.on("logout",()=>{
-        if(socket.username){
-            io.emit("chat message",`👋 ${socket.username} が退室しました！`)
+        if(socket.username && socket.room){
+            io.to(socket.room).emit("chat message",`👋 ${socket.username} が退室しました！`);
+            socket.leave(socket.room);
+
         }
+        socket.disconnect();
     });
+
+
 
     socket.on("disconnect",()=>{
         console.log(`${socket.username}が切断されました`)

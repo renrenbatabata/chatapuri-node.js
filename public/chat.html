@@ -68,6 +68,7 @@
 </head>
 
 <body>
+    <h2 id="roomTitle"></h2> <!-- 部屋名 -->
     <ul id="messages"></ul>
     <form id="form" action="">
         <input id="messageInput" autocomplete="off" /><button id="sentBtn">送信する</button>
@@ -76,16 +77,19 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
         let socket = io();
-        let username = localStorage.getItem("username")
+        let username = localStorage.getItem("username");
+        let room = localStorage.getItem("room");
         const form = document.getElementById("form");
         const input = document.getElementById("input");
         const messages = document.getElementById("messages");
 
-        //ユーザー名を設定
-        if (!username) {
+        document.getElementById("roomTitle").innerText = `💬 部屋:${room}`;
+
+        //ユーザー名と部屋を設定
+        if (!username || !room) {
             window.location.href = "/login";
         } else {
-            socket.emit("set username", username);
+            socket.emit("join room", { username, room });
         }
 
         if (!sessionStorage.getItem("joined")) {
@@ -95,10 +99,12 @@
 
 
         // メッセージを送信
-        document.getElementById("sentBtn").addEventListener("click", () => {
+        document.getElementById("sentBtn").addEventListener("click", (e) => {
+            e.preventDefault();
+
             const message = document.getElementById("messageInput").value;
             if (message) {
-                socket.emit("chat message", message);
+                socket.emit("chat message", { room, message: `${username}:${message}` });
                 document.getElementById("messageInput").value = "";
             }
 
@@ -128,8 +134,9 @@
 
         //ログアウトボタン
         document.getElementById("logoutBtn").addEventListener("click", () => {
-            socket.emit("logout");
+            socket.emit("logout", room);
             localStorage.removeItem("username");//名前削除
+            localStorage.removeItem("room");//部屋削除
             sessionStorage.removeItem("joined")//フラグ削除
             window.location.href = "/login";
         })

@@ -1,0 +1,77 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
+
+
+$bg-gradient: linear-gradient(135deg, #89f7fe, #66a6ff);
+$primary-color: #66a6ff;
+$hover-color: #5591e6;
+$shadow-color: rgba(102, 166, 255, 0.3);
+$font-stack: 'Arial', sans-serif;
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background: $bg-gradient;
+    font-family: $font-stack;
+
+    .inner {
+        background: white;
+        padding: 10%;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        width: 380px;
+        animation: fadeIn 0.8s ease-in-out;
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 50px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #66a6ff;
+            text-shadow: 0 4px 8px rgba(102, 166, 255, 0.5);
+        }
+
+        img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 12px 0;
+            background: $primary-color;
+            color: white;
+            font-size: 25px;
+            border: none;
+            border-radius: 8px;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+
+            &:hover {
+                background: $hover-color;
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(102, 166, 255, 0.4);
+            }
+        }
+    }
+}
+
+// フェードインアニメーション
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
