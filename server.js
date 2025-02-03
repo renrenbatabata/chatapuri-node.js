@@ -7,11 +7,21 @@ const server = http.createServer(app);
 const io = require("socket.io")(server);
 const PORT = 3000;
 
-
+// ルートアクセスで `index.html` を表示
 app.get("/", (req, res) => {
-    res.sendFile(__dirname + "/index.html")
+    res.sendFile(__dirname + "/public/index.html")
 });
-app.use(express.static("public"));
+// `/login` にアクセスしたら `login.html` を送る
+app.get("/login",(req,res)=>{
+    res.sendFile(__dirname + "/public/login.html");
+});
+
+// `/chat` にアクセスしたら `chat.html` を送る
+app.get("/chat",(req,res)=>{
+    res.sendFile(__dirname + "/public/chat.html");
+});
+
+app.use(express.static("public"));//クライアント側のHTMLファイルを配信
 
 
 io.on("connection", (socket) => {
@@ -19,10 +29,11 @@ io.on("connection", (socket) => {
     console.log("誰かが来たぞ🎉");
 
     //ユーザーが名前を送ってきたら保存
-    socket.on("set username",(username)=>{
-        socket.username=username;//各ソケットに名前を保存
-        io.emit("chat message",`🔔${username}が入ってきました!`)
-    })
+    socket.on("set username", (username) => {
+        socket.username = username;
+    });
+
+
     //メッセージを受信
     socket.on("chat message", (msg) => {
         if(socket.username){

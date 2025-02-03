@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>リアルchatアプリ</title>
+    <style>
+        body {
+            margin: 0;
+            padding-bottom: 3rem;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                Helvetica, Arial, sans-serif;
+        }
+
+        #form {
+            background: #181818dc;
+            padding: 0.25rem;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            height: 3rem;
+            box-sizing: border-box;
+            backdrop-filter: blur(10px);
+        }
+
+        #messageInput {
+            border: none;
+            padding: 0 1rem;
+            flex-grow: 1;
+            margin: 0.25rem;
+        }
+
+        #messageInput:focus {
+            outline: none;
+        }
+
+        #sentBtn {
+            background: #4e8357;
+            border: none;
+            padding: 0 1rem;
+            margin: 0.25rem;
+            border-radius: 1px;
+            outline: none;
+            color: #fff;
+        }
+
+        #messages {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        #messages>li {
+            padding: 0.5rem 1rem;
+        }
+
+        #messages>li:nth-child(odd) {
+            background: #efefef;
+        }
+
+        #logoutBtn {
+            background-color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <ul id="messages"></ul>
+    <form id="form" action="">
+        <input id="messageInput" autocomplete="off" /><button id="sentBtn">送信する</button>
+        <button id="logoutBtn">ログアウト</button>
+    </form>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        let socket = io();
+        let username = localStorage.getItem("username")
+        const form = document.getElementById("form");
+        const input = document.getElementById("input");
+        const messages = document.getElementById("messages");
+
+        //ユーザー名を設定
+        if (!username) {
+            window.location.href = "/login";
+        } else {
+            socket.emit("set username", username);
+        }
+
+        if(!sessionStorage.getItem("joined")){
+            socket.emit("chat message",`🔔${username}が入ってきました!`);
+            sessionStorage.setItem("joined",true);
+        }
+
+
+        // メッセージを送信
+        document.getElementById("sentBtn").addEventListener("click", () => {
+            const message = document.getElementById("messageInput").value;
+            if (message) {
+                socket.emit("chat message", message);
+                document.getElementById("messageInput").value = "";
+            }
+
+        });
+
+        // メッセージのリストをローカルストレージから取得して表示
+        window.onload = function () {
+            const savedMessages = JSON.parse(localStorage.getItem("messages")) || [];
+            savedMessages.forEach(msg => {
+                let item = document.createElement("li");
+                item.textContent = msg;
+                document.getElementById("messages").appendChild(item);
+            });
+        }
+
+        // メッセージを受信して表示
+        socket.on("chat message", (msg) => {
+            let item = document.createElement("li");
+            item.textContent = msg;
+            document.getElementById("messages").appendChild(item);
+
+            // メッセージをローカルストレージに保存
+            let savedMessages = JSON.parse(localStorage.getItem("messages")) || [];
+            savedMessages.push(msg);
+            localStorage.setItem("messages", JSON.stringify(savedMessages));
+        });
+
+        //ログアウトボタン
+        document.getElementById("logoutBtn").addEventListener("click", () => {
+            localStorage.removeItem("username");
+            window.location.href = "/login"
+        })
+
+
+
+
+
+    </script>
+</body>
+
+</html>
