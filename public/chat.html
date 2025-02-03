@@ -85,39 +85,26 @@
 
         document.getElementById("roomTitle").innerText = `💬 部屋:${room}`;
 
-        //ユーザー名と部屋を設定
-        if (!username || !room) {
-            window.location.href = "/login";
-        } else {
-            socket.emit("join room", { username, room });
-        }
-
-        if (!sessionStorage.getItem("joined")) {
-            socket.emit("chat message", {room,message:`🔔${username}が入ってきました!`});
-            sessionStorage.setItem("joined", true);
-        }
-
-
-        // メッセージを送信
-        document.getElementById("sentBtn").addEventListener("click", (e) => {
-            e.preventDefault();
-
-            const message = document.getElementById("messageInput").value;
-            if (message) {
-                socket.emit("chat message", { room, message: `${username}:${message}` });
-                document.getElementById("messageInput").value = "";
-            }
-
-        });
-
-        // メッセージのリストをローカルストレージから取得して表示
-        window.onload = function () {
-            const savedMessages = JSON.parse(localStorage.getItem("messages")) || [];
+        //部屋ごとのローカルストレージから取得して表示
+        function loadMessages(room) {
+            const savedMessages = JSON.parse(localStorage.getItem(room)) || [];
             savedMessages.forEach(msg => {
                 let item = document.createElement("li");
                 item.textContent = msg;
                 document.getElementById("messages").appendChild(item);
             });
+        }
+
+        // メッセージをローカルストレージに保存
+        function savedMessages(room, msg) {
+            let savedMessages = JSON.parse(localStorage.getItem(room)) || [];
+            savedMessages.push(msg);
+            localStorage.setItem(room, JSON.stringify(savedMessages));
+        }
+
+        //ページが読み込まれた際にメッセージを表示
+        window.onload = function () {
+            loadMessages(room);
         }
 
         // メッセージを受信して表示
@@ -126,15 +113,48 @@
             item.textContent = msg;
             document.getElementById("messages").appendChild(item);
 
-            // メッセージをローカルストレージに保存
-            let savedMessages = JSON.parse(localStorage.getItem("messages")) || [];
-            savedMessages.push(msg);
-            localStorage.setItem("messages", JSON.stringify(savedMessages));
+            sevedMessage(room, msg);
+
         });
+        //ユーザー名と部屋を設定
+        if (!username || !room) {
+            window.location.href = "/login";
+        } else {
+            socket.emit("join room", { username, room });
+        }
+
+        if (!sessionStorage.getItem("joined")) {
+            socket.emit("chat message", { room, message: `🔔${username}が入ってきました!` });
+            sessionStorage.setItem("joined", true);
+        }
+
+
+        // メッセージを送信
+        document.getElementById("sentBtn").addEventListener("click", (e) => {
+            e.preventDefault();
+            const message = document.getElementById("messageInput").value;
+            if (message) {
+                socket.emit("chat message", { room, message: `${username}:${message}` });
+                document.getElementById("messageInput").value = "";
+            }
+
+        });
+
+
+
+
+
+
+        function clearMessages() {
+            document.getElementById("messages").innerHTML = "";
+        }
+
+
 
         //ログアウトボタン
         document.getElementById("logoutBtn").addEventListener("click", () => {
             socket.emit("logout", room);
+            clearMessages();
             localStorage.removeItem("username");//名前削除
             localStorage.removeItem("room");//部屋削除
             sessionStorage.removeItem("joined")//フラグ削除
