@@ -88,9 +88,9 @@
             socket.emit("set username", username);
         }
 
-        if(!sessionStorage.getItem("joined")){
-            socket.emit("chat message",`🔔${username}が入ってきました!`);
-            sessionStorage.setItem("joined",true);
+        if (!sessionStorage.getItem("joined")) {
+            socket.emit("chat message", `🔔${username}が入ってきました!`);
+            sessionStorage.setItem("joined", true);
         }
 
 
@@ -133,9 +133,9 @@
             sessionStorage.removeItem("joined")//フラグ削除
             window.location.href = "/login";
         })
-window.addEventListener("beforeunload",()=>{
-    socket.disconnect;
-})
+        window.addEventListener("beforeunload", () => {
+            socket.disconnect;
+        });
 
 
 
