@@ -10,16 +10,16 @@ body {
 }
 body .inner {
   background: white;
-  padding: 30px;
+  padding: 10%;
   border-radius: 15px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   text-align: center;
-  width: 320px;
+  width: 380px;
   animation: fadeIn 0.8s ease-in-out;
 }
 body .inner h1 {
   font-family: "Orbitron", sans-serif;
-  font-size: 40px;
+  font-size: 50px;
   font-weight: 700;
   text-transform: uppercase;
   color: #66a6ff;
@@ -38,7 +38,7 @@ body .inner button {
   padding: 12px 0;
   background: #66a6ff;
   color: white;
-  font-size: 18px;
+  font-size: 25px;
   border: none;
   border-radius: 8px;
   margin-top: 20px;
