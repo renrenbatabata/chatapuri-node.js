@@ -4,30 +4,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/login.css">
     <title>ログイン画面</title>
 </head>
 
 <body>
-    <h2>WebSocket-Chat</h2>
-    <form class="form-inline">
-        <div class="form-group">
-            <label for="rooms" class="roomLabel">部屋　:</label><!-- /.roomLabel -->
-            <select name="form-control" id="rooms">
-                <option value="room01">部屋01</option>
-                <option value="room02">部屋02</option>
-                <option value="room03">部屋03</option>
-                <option value="room04">部屋04</option>
-                <option value="room05">部屋05</option>
-            </select><!-- /# -->
-        </div><!-- /.form-group -->
-    </form>
-    <input type="text" id="usernameInput" placeholder="名を名乗れ！">
-    <button id="loginBtn">ログイン</button>
-
+    <div class="inner">
+        <h2>Login</h2>
+        <form class="form-inline">
+            <div class="form-group">
+                <label for="rooms" class="roomLabel">選べ！</label><!-- /.roomLabel -->
+                <select name="form-control" id="rooms">
+                    <option value="room01">部屋01</option>
+                    <option value="room02">部屋02</option>
+                    <option value="room03">部屋03</option>
+                    <option value="room04">部屋04</option>
+                    <option value="room05">部屋05</option>
+                </select><!-- /# -->
+            </div><!-- /.form-group -->
+        </form>
+        <input type="text" id="usernameInput" placeholder="名を名乗れ！">
+        <button id="loginBtn">ログイン</button>
+    </div><!-- /.inner -->
     <script>
 
         //既にログインしてたら、自動的にchat画面へ
-        if (localStorage.getItem("username")&& localStorage.getItem("room")) {
+        if (localStorage.getItem("username") && localStorage.getItem("room")) {
             window.location.href = "/chat";
         }
 
@@ -38,7 +40,7 @@
 
             if (username) {
                 localStorage.setItem("username", username);//ユーザー名を保存
-                localStorage.setItem("room",room);//部屋名を保存
+                localStorage.setItem("room", room);//部屋名を保存
                 console.log("ユーザー名と部屋を保存")
                 window.location.href = "/chat";//chat画面へ遷移
             } else {

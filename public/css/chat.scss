@@ -1,0 +1,91 @@
+/* 色設定 */
+$primary-color: #63d4ed9f; // 青
+$secondary-color: #0056b3; // ダークブルー
+$bg-color: #f8f9fa; // 明るい背景
+$text-color: #333;
+$border-color: #dcdfe6; // ボーダー
+$bg-gradient: linear-gradient(135deg, #66a6ff, #007bff);
+
+/* メインレイアウト */
+.inner {
+    font-size: 1rem;
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: $bg-color;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+/* 部屋名 */
+#roomTitle {
+    text-align: center;
+    font-size: 1.75rem;
+    color: white;
+    border-radius: 1rem;
+    padding: 1rem;
+    background: $primary-color;
+    font-weight: bold;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* メッセージ一覧 */
+#messages {
+    flex: 1;
+    font-size: 1rem;
+    overflow-y: auto;
+    background: rgba(252, 241, 241, 0.772);
+    border-radius: 0;
+    padding: 1rem;
+    list-style-type: none;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* フォームエリア */
+#form {
+    display: flex;
+    padding: 1rem;
+    background: white;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+}
+
+#messageInput {
+    flex-grow: 1;
+    font-size: 1rem;
+    border: 1px solid $border-color;
+    border-radius: 8px;
+    padding: 12px;
+    transition: 0.3s;
+}
+
+#sentBtn, #logoutBtn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: none;
+}
+
+#sentBtn {
+    background-color:rgb(78, 100, 244);
+    color: white;
+}
+
+#sentBtn:hover {
+    background-color: $secondary-color;
+}
+
+#logoutBtn {
+    background-color: #e74c3c;
+    color: white;
+}
+
+#logoutBtn:hover {
+    background-color: #c0392b;
+}
