@@ -71,10 +71,17 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
         let socket = io();
-
+        let username = localStorage.getItem("username")
         const form = document.getElementById("form");
         const input = document.getElementById("input");
         const messages = document.getElementById("messages");
+
+        //ユーザー名を設定
+       if(!username){
+        username = prompt("名を名乗れ！");
+        localStorage.setItem("username",username);
+       }
+       socket.emit("set username",username);
 
         form.addEventListener("submit", function (e) {
             e.preventDefault();
@@ -90,6 +97,7 @@
             item.textContent = msg;
             messages.appendChild(item);
         });
+
 
 
 
