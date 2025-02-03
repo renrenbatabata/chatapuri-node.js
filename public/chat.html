@@ -128,10 +128,14 @@
 
         //ログアウトボタン
         document.getElementById("logoutBtn").addEventListener("click", () => {
-            localStorage.removeItem("username");
-            window.location.href = "/login"
+            socket.emit("logout");
+            localStorage.removeItem("username");//名前削除
+            sessionStorage.removeItem("joined")//フラグ削除
+            window.location.href = "/login";
         })
-
+window.addEventListener("beforeunload",()=>{
+    socket.disconnect;
+})
 
 
 

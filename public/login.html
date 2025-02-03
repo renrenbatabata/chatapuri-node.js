@@ -8,7 +8,7 @@
 </head>
 
 <body>
-    <h2>ようこそ</h2>
+    <h2>ようこそ!魔王の部屋に</h2>
     <input type="text" id="usernameInput" placeholder="名を名乗れ！">
     <button id="loginBtn">ログイン</button>
 
@@ -16,13 +16,12 @@
 
         document.getElementById("loginBtn").addEventListener("click", () => {
             let username = document.getElementById("usernameInput").value;
-            console.log(username);
 
 
             if (username) {
                 localStorage.setItem("username", username);//ユーザー名を保存
                 console.log("ユーザー名を保存")
-                window.location.href = "chat.html";//chat画面へ遷移
+                window.location.href = "/chat";//chat画面へ遷移
             } else {
                 alert("名前入れろや！")
             }
@@ -30,7 +29,7 @@
 
         //既にログインしてたら、自動的にchat画面へ
         if (localStorage.getItem("username")) {
-            window.location.href = "chat.html";
+            window.location.href = "/chat";
         }
     </script>
 </body>

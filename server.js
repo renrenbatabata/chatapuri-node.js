@@ -44,11 +44,15 @@ io.on("connection", (socket) => {
     });
 
     //切断時
-    socket.on("disconnect",()=>{
+    socket.on("logout",()=>{
         if(socket.username){
             io.emit("chat message",`👋 ${socket.username} が退室しました！`)
         }
-    })
+    });
+
+    socket.on("disconnect",()=>{
+        console.log(`${socket.username}が切断されました`)
+    });
 
 
 });
